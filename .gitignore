@@ -1,0 +1,22 @@
+# ===== 隐私 / 数据：绝不提交 =====
+# 真实配置（含密码）
+config.json
+# 上传的文件与索引
+data/
+# 运行日志
+logs/
+# TLS 证书
+certs/
+
+# ===== 依赖与构建产物 =====
+node_modules/
+
+# ===== 临时文件 =====
+*.log
+*.tmp
+*.part
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db
+desktop.ini

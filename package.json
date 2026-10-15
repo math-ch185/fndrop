@@ -1,0 +1,13 @@
+{
+  "name": "fndrop",
+  "version": "1.0.0",
+  "private": true,
+  "description": "飞牛快传 FnDrop —— 局域网/外网 文件与文字互传服务（零依赖）",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

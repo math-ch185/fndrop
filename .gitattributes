@@ -1,0 +1,12 @@
+# 仓库内统一使用 LF 行尾（项目目标是 Linux / Docker 部署）
+* text=auto eol=lf
+
+# 二进制文件不做行尾转换
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff2 binary
+*.woff binary
+*.zip binary

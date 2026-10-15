@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>飞牛快传 · FnDrop</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128640;</text></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ================= 登录 ================= -->
+<div id="login" class="login-mask hidden">
+  <form class="login-card" id="loginForm">
+    <div class="login-logo">🚀</div>
+    <h1>飞牛快传</h1>
+    <p class="sub">文件 · 文字 · 内外网互传</p>
+    <input type="text" id="loginUser" placeholder="账号" autocomplete="username" value="admin">
+    <input type="password" id="loginPwd" placeholder="请输入访问密码" autocomplete="current-password" required>
+    <button type="submit" class="btn primary block">进入</button>
+    <p class="err" id="loginErr"></p>
+  </form>
+</div>
+
+<!-- ================= 主界面 ================= -->
+<div id="app" class="hidden">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🚀</span>
+      <span class="title">飞牛快传</span>
+    </div>
+    <div class="topbar-right">
+      <button class="chip" id="addrChip" title="查看 / 复制访问地址">🌐 <span id="addrText">—</span></button>
+      <button class="chip" id="devChip" title="点击修改本机名称">📱 <span id="devText">设备</span></button>
+      <button class="chip ghost" id="logoutBtn" title="退出登录">退出</button>
+    </div>
+  </header>
+
+  <!-- 访问地址弹窗 -->
+  <div id="addrPop" class="pop hidden">
+    <div class="pop-title">访问地址 <span class="muted">点一下即复制</span></div>
+    <div id="addrList" class="pop-list"></div>
+    <div class="pop-tip">手机连同一 Wi-Fi 用<b>局域网</b>地址；在外面用<b>外网</b>地址（需在飞牛 NAS 上配好 DDNS / 内网穿透）。</div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="clip">📋 文字剪贴板<span class="dot hidden" id="clipDot"></span></button>
+    <button class="tab" data-tab="files">📁 文件传输</button>
+  </nav>
+
+  <main>
+    <!-- ---------- 剪贴板 ---------- -->
+    <section id="tab-clip" class="panel active">
+      <div class="clip-editor">
+        <textarea id="clipInput" rows="4" placeholder="输入或粘贴文字，Ctrl+Enter 发送给所有设备…"></textarea>
+        <div class="clip-actions">
+          <span class="muted" id="clipLen">0 字</span>
+          <button class="btn primary" id="clipSend">发送同步</button>
+        </div>
+      </div>
+
+      <div class="list-head">
+        <span>同步记录 <b id="clipCount">0</b></span>
+        <button class="mini danger" id="clipClear">清空全部</button>
+      </div>
+
+      <div id="clipList" class="clip-list">
+        <div class="empty">暂无内容</div>
+      </div>
+    </section>
+
+    <!-- ---------- 文件 ---------- -->
+    <section id="tab-files" class="panel">
+      <div id="dropzone" class="dropzone">
+        <div class="dz-icon">⬆️</div>
+        <div class="dz-title">拖拽文件到此处</div>
+        <div class="dz-sub">或点击选择文件 · 支持 Ctrl+V 粘贴图片/文件</div>
+        <div class="dz-tip">大文件自动分片上传，断网后可续传</div>
+        <input type="file" id="fileInput" multiple hidden>
+      </div>
+
+      <div id="queue" class="queue"></div>
+
+      <div class="list-head">
+        <span>共享文件 <b id="fileCount">0</b></span>
+        <span class="list-head-right">
+          <label class="sel-all" title="全选 / 取消全选"><input type="checkbox" id="selAll"><span>全选</span></label>
+          <button class="mini danger" id="delSelected" disabled title="删除勾选的文件">删除所选(<span id="selCount">0</span>)</button>
+          <span id="totalSize" class="muted"></span>
+          <button class="mini danger" id="clearAll">清空</button>
+        </span>
+      </div>
+
+      <div id="fileList" class="file-list">
+        <div class="empty">还没有文件，上传一个试试 👆</div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>

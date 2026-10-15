@@ -1,0 +1,41 @@
+services:
+  fndrop:
+    build: .
+    # 也可以直接用现成镜像（如果你已经构建并推送过）
+    # image: fndrop:1.0.0
+    container_name: fndrop
+    restart: unless-stopped
+    # 用 host 网络（不用端口映射）。原因：
+    #   1) 桥接模式下容器看到的客户端 IP 全被 NAT 成网关地址，
+    #      会导致「密码连续错几次锁定该 IP」误锁所有人，日志里也看不到真实来源；
+    #   2) 容器内的网卡地址对局域网用户没意义，界面上的「访问地址」会显示错。
+    # host 模式直接用宿主机网络，端口就是下面 config.json 里的 port（默认 8080）。
+    network_mode: host
+    environment:
+      # 密码等配置统一放 config.json（下面已挂载进容器），这里不再重复设，避免两处不一致
+      # 如确实想用环境变量覆盖，可打开下面这行（它会盖过 config.json）
+      # APP_PASSWORD: "改成你自己的密码"
+      # ===== 外网访问地址（可选，填了会在界面顶部显示）=====
+      # PUBLIC_URL: "https://drop.你的域名.com"
+      # ===== 直接在容器里启用 HTTPS（需要挂载证书）=====
+      # HTTPS_CERT: "/certs/fullchain.pem"
+      # HTTPS_KEY:  "/certs/privkey.pem"
+      # ===== 其它可选 =====
+      TZ: "Asia/Shanghai"
+      FILE_TTL_HOURS: "0"     # 0=文件不自动过期；想自动清理填小时数，例如 72
+      MAX_FILE_GB: "20"       # 单文件大小上限
+      SESSION_DAYS: "30"      # 登录保持天数
+      LOGIN_MAX_FAIL: "8"     # 连续密码错误多少次后锁定
+      LOGIN_LOCK_MIN: "10"    # 锁定多少分钟
+    volumes:
+      # 左边改成你飞牛 NAS 上的实际目录，例如 /vol1/1000/docker/fndrop/data
+      - ./data:/data
+      # 密码 / 端口 / 外网地址都在这个文件里改，改完 docker compose restart 生效
+      - ./config.json:/app/config.json:ro
+      # 需要容器内启用 HTTPS 时再打开：
+      # - ./certs:/certs:ro
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/status').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 60s
+      timeout: 5s
+      retries: 3

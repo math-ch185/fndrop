@@ -1,0 +1,47 @@
+{
+  // ============ 飞牛快传 FnDrop 配置示例 ============
+  // 先复制一份为 config.json 再改：cp config.example.json config.json
+  // config.json 已被 .gitignore 忽略，不会被提交到仓库。
+  // 以 // 开头的整行是注释，可以随便加。
+
+  // 访问密码 —— 第一次用一定要改掉！
+  "password": "改成你自己的密码",
+
+  // 登录账号（单用户服务，默认 admin；设为空字符串 "" 则只校验密码）
+  "username": "admin",
+
+  // 网页端口，默认 8080。被占用了就改成 8081 之类
+  "port": 8080,
+
+  // 监听地址。0.0.0.0 = 允许其他设备访问（正常就该这样）；只想本机用可改 "127.0.0.1"
+  "host": "0.0.0.0",
+
+  // 文件保存位置。留空 = 程序目录下的 data 文件夹；也可以写绝对路径，例如 "D:/FnDropData"
+  "dataDir": "",
+
+  // 外网访问地址（可选）。映射好端口 / 配好反代后填这里，网页顶部会显示它方便复制
+  // 例如 "https://drop.example.com" 或 "http://1.2.3.4:8080"
+  "publicUrl": "",
+
+  // ===== 以下一般不用动 =====
+
+  // 登录保持天数
+  "sessionDays": 30,
+
+  // 密码连续错几次锁定该 IP，锁多久（分钟）
+  "loginMaxFail": 8,
+  "loginLockMin": 10,
+
+  // 文件自动清理：多少小时后自动删除，0 = 不自动删
+  "fileTtlHours": 0,
+
+  // 单个文件大小上限（GB）
+  "maxFileGb": 20,
+
+  // 直接启用 HTTPS 时填证书路径（PEM 格式），一般留空用反向代理
+  "httpsCert": "",
+  "httpsKey": "",
+
+  // 是否信任反向代理的 X-Forwarded-* 头（用 Nginx/Caddy 反代时保持 1）
+  "trustProxy": 1
+}
